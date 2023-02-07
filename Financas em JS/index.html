@@ -1,6 +1,5 @@
 <html>
     <script>
-
         function arredondar (valor) {
             return Math.round(valor*100)/100
         }
@@ -16,14 +15,24 @@
             return rendimentos
         }
 
-        function calular_saldo (mes, saldo_inicial, salario, aluguel, conta_de_agua, conta_de_luz, internet, transporte, lazer, alimentacao) {
+        function calular_saldo (mes, saldo_inicial, lancamentos) {
             console.log(mes)
-            saldo = saldo_inicial + salario - aluguel - conta_de_agua - conta_de_luz - internet - transporte - lazer - alimentacao
+            saldo = saldo_inicial
+            for (lancamento of lancamentos) {
+                if(lancamento.tipo === "receita") {
+                    saldo += lancamento.valor
+                }
+                if (lancamento.tipo === "despesa") {
+                saldo -= lancamento.valor
+                }
+            //    saldo+= lancamentos
+            }
             esta_negativo = saldo < 0
             if (esta_negativo) {
                 juros = calcular_juros(saldo)
                 saldo = arredondar(saldo + juros)
-            } else {
+            } 
+            else {
                 rendimentos = calcular_rendimentos(saldo)
                 saldo = arredondar(saldo + rendimentos)
             }
@@ -32,44 +41,55 @@
 
         // Janeiro
         saldo_inicial = 0
-        salario1 = 3000
-        aluguel1 = 1000
-        conta_de_agua1 = 200
-        conta_de_luz1 = 100
-        internet1 = 100
-        transporte1 = 300
-        lazer1 = 300
-        alimentacao1 = 500
-        saldo1 = calular_saldo("Janeiro", saldo_inicial, salario1, aluguel1, conta_de_agua1, conta_de_luz1, internet1, transporte1, lazer1, alimentacao1)
+        lancamentos_janeiro = [
+            {categoria: "Salário", tipo: "receita", valor: 3000}, 
+            {categoria: "Aluguel", tipo: "despesa", valor: 1000}, 
+            {categoria: "Conta de Luz", tipo: "despesa", valor: 200}, 
+            {categoria: "Conta de Água", tipo: "despesa", valor: 100}, 
+            {categoria: "Internet", tipo: "despesa", valor: 100}, 
+            {categoria: "Transporte", tipo: "despesa", valor: 300}, 
+            {categoria: "Lazer", tipo: "despesa", valor: 300}, 
+            {categoria: "Alimentação", tipo: "despesa", valor: 500}, 
+            {categoria: "Condomínio", tipo: "despesa", valor: 300},
+            {categoria: "Farmácia", tipo: "despesa", valor: 100}
+        ]
+        saldo1 = calular_saldo("Janeiro", saldo_inicial, lancamentos_janeiro)
         console.log(saldo1)
 
         // Fevereiro
-        salario2 = 3000
-        aluguel2 = 1200
-        conta_de_agua2 = 250
-        conta_de_luz2 = 100
-        internet2 = 100
-        transporte2 = 500
-        lazer2 = 0
-        alimentacao2 = 1000        
-        saldo2 = calular_saldo("Fevereiro", saldo1, salario2, aluguel2, conta_de_agua2, conta_de_luz2, internet2, transporte2, lazer2, alimentacao2)
+        lancamentos_fevereiro = [
+            {categoria: "Salário", tipo: "receita", valor: 3000}, 
+            {categoria: "Aluguel", tipo: "despesa", valor: 1200},
+            {categoria: "Conta de Luz", tipo: "despesa", valor: 250},
+            {categoria: "Conta de Água", tipo: "despesa", valor: 100},
+            {categoria: "Internet", tipo: "despesa", valor: 100},
+            {categoria: "Transporte", tipo: "despesa", valor: 500},
+            {categoria: "Lazer", tipo: "despesa", valor: 0},
+            {categoria: "Alimentação", tipo: "despesa", valor: 1000},
+            {categoria: "Condomínio", tipo: "despesa", valor: 400},
+            {categoria: "Farmácia", tipo: "despesa", valor: 0}
+        ]          
+        saldo2 = calular_saldo("Fevereiro", saldo1, lancamentos_fevereiro)
         console.log(saldo2)     
         
         // Março
-        salario3 = 4000
-        aluguel3 = 1200
-        conta_de_agua3 = 200
-        conta_de_luz3 = 100
-        internet3 = 200
-        transporte3 = 500
-        lazer3 = 800
-        alimentacao3 = 1000        
-        saldo3 = calular_saldo("Março", saldo2, salario3, aluguel3, conta_de_agua3, conta_de_luz3, internet3, transporte3, lazer3, alimentacao3)
+        lancamentos_marco = [
+        {categoria: "Salário", tipo: "receita", valor: 4000}, 
+        {categoria: "Aluguel", tipo: "despesa", valor: 1200}, 
+        {categoria: "Conta de Luz", tipo: "despesa", valor: 200}, 
+        {categoria: "Conta de Água", tipo: "despesa", valor: 100}, 
+        {categoria: "Internet", tipo: "despesa", valor: 200}, 
+        {categoria: "Transporte", tipo: "despesa", valor: 500}, 
+        {categoria: "Lazer", tipo: "despesa", valor: 800}, 
+        {categoria: "Alimentação", tipo: "despesa", valor: 1000}, 
+        {categoria: "Condomínio", tipo: "despesa", valor: 400}, 
+        {categoria: "Farmácia", tipo: "despesa", valor: 0}
+    ]       
+        saldo3 = calular_saldo("Março", saldo2, lancamentos_marco)
         console.log(saldo3)
 
         acumulado_ano = saldo3
         console.log("Ano")
         console.log(acumulado_ano)
-
     </script>
 </html>
