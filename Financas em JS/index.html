@@ -34,25 +34,34 @@
 
         function calular_saldo (mes, saldo_inicial, lancamentos) {
             console.log(mes)
-            saldo = saldo_inicial
+            TotalizadorDoMes = { saldo: 0, saldo_inicial, juros:0, rendimentos:0, receitas: 0, despesas: 0}
+            TotalizadorDoMes.saldo = saldo_inicial
             for (lancamento of lancamentos) {
                 if(lancamento.tipo === "receita") {
-                    saldo += lancamento.valor
+                    TotalizadorDoMes.saldo += lancamento.valor
+                    TotalizadorDoMes.receitas += lancamento.valor
                 }
                 if (lancamento.tipo === "despesa") {
-                saldo -= lancamento.valor
+                TotalizadorDoMes.saldo -= lancamento.valor
+                TotalizadorDoMes.despesas += lancamento.valor
+                }
+            for (lancamento of lancamentos) {
+                if(lancamento.tipo === "despesas") {
+                    percentual = lancamento.valor/TotalizadorDoMes.despesas
+                    console.log(lancamento.categoria.percentual)
                 }
             }
-            esta_negativo = saldo < 0
+            }
+            esta_negativo = TotalizadorDoMes.saldo < 0
             if (esta_negativo) {
-                juros = calcular_juros(saldo)
-                saldo = arredondar(saldo + juros)
+                TotalizadorDoMes.juros = calcular_juros(TotalizadorDoMes.saldo)
+                TotalizadorDoMes.saldo = arredondar(TotalizadorDoMes.saldo + juros)
             } 
             else {
-                rendimentos = calcular_rendimentos(saldo)
-                saldo = arredondar(saldo + rendimentos)
+                TotalizadorDoMes.rendimentos = calcular_rendimentos(TotalizadorDoMes.saldo)
+                TotalizadorDoMes.saldo = arredondar(TotalizadorDoMes.saldo + rendimentos)
             }
-            return saldo
+            return TotalizadorDoMes
         }       
 
         // Janeiro
@@ -69,8 +78,8 @@
             new Lancamento("Condomínio", "despesa", 300),
             new Lancamento("Farmácia", "despesa", 100)
         ]
-        saldo1 = calular_saldo("Janeiro", saldo_inicial, lancamentos_janeiro)
-        console.log(saldo1)
+        TotalizadorDoMes1 = calular_saldo("Janeiro", saldo_inicial, lancamentos_janeiro)
+        console.log(TotalizadorDoMes1)
 
         // Fevereiro
         lancamentos_fevereiro = [
@@ -85,8 +94,8 @@
             new Lancamento("Condomínio", "despesa", 400),
             new Lancamento("Farmácia", "despesa", 0)
         ]          
-        saldo2 = calular_saldo("Fevereiro", saldo1, lancamentos_fevereiro)
-        console.log(saldo2)     
+        TotalizadorDoMes2 = calular_saldo("Fevereiro", TotalizadorDoMes1.saldo, lancamentos_fevereiro)
+        console.log(TotalizadorDoMes2)     
         
         // Março
         lancamentos_marco = [
@@ -101,10 +110,10 @@
             new Lancamento("Condomínio", "despesa", 400), 
             new Lancamento("Farmácia", "despesa", 0)
     ]       
-        saldo3 = calular_saldo("Março", saldo2, lancamentos_marco)
+        saldo3 = calular_saldo("Março", TotalizadorDoMes2.saldo, lancamentos_marco)
         console.log(saldo3)
 
-        acumulado_ano = saldo3
+        acumulado_ano = saldo3.saldo
         console.log("Ano")
         console.log(acumulado_ano)
     </script>
